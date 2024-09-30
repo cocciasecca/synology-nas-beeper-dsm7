@@ -14,10 +14,12 @@ else
 	goal=$1
 fi
 
-if [ "$goal" == "enable" ] || [ "$goal" == "disable" ]
+current_status=$(upsc ups ups.beeper.status)
+
+if { [ "$goal" == "enable" ] && [ "$current_status" == "disabled" ]; } || { [ "$goal" == "disable" ] && [ "$current_status" == "enabled" ]; }
 then
 	echo "$goal beeper..."
-	python /root/upscmd.py beeper.${goal}
+	python /root/upscmd.py beeper.toggle
 	echo "Waiting 5 seconds for UPS to update state..."
 	sleep 5
 	if [[ "$(upsc ups ups.beeper.status)" == "${goal}d" ]]
@@ -27,6 +29,9 @@ then
 		echo "Unable to $goal beeper. Status = $(upsc ups ups.beeper.status)."
 		exit 1
 	fi
+elif { [ "$goal" == "enable" ] && [ "$current_status" == "enabled" ]; } || { [ "$goal" == "disable" ] && [ "$current_status" == "disabled" ]; }
+then
+	echo "Beeper already ${goal}d."
 else
 	echo "Unknown / unsupported argument: $1"
 fi
