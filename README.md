@@ -148,6 +148,9 @@ Go to the DSM Web interface (Control panel -> Task scheduler) and add the 3 task
     - shedule: daily at 9am
     - command: `bash /root/ups_beeper_control.sh enable`
     - send email when the script terminates abnormally
-2. Scheduled task to disable beeper (similar to above)
+2. Triggered task to disable beeper on boot (similar to above)
+    - user: root
+    - command: `bash /root/ups_beeper_control.sh disable`
 3. Triggered task to enable / disable on boot based on the current time
     - command: `bash /root/ups_beeper_control.sh curtime`
+4. Etcetera...
